@@ -1,3 +1,4 @@
+import 'package:destini_challenge_starting/node.dart';
 import 'package:destini_challenge_starting/story.dart';
 import 'package:destini_challenge_starting/story_brain.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,20 @@ MaterialStateProperty<Color> getColor(Color color) {
 }
 
 class _StoryPageState extends State<StoryPage> {
+  int storyNumber = 0;
+
   @override
   Widget build(BuildContext context) {
+    List<BinaryTreeNode> binaryTree = [];
+    for (var i = 0; i < 10; i++) {
+      binaryTree.add(BinaryTreeNode("test$i", i + 1, i + 2));
+    }
+
+    for (var i = 0; i < 10; i++) {
+      print(
+          "data: ${binaryTree[i].data}, dest1: ${binaryTree[i].dest1}, dest2: ${binaryTree[i].dest2}");
+    }
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -44,7 +57,7 @@ class _StoryPageState extends State<StoryPage> {
                 flex: 12,
                 child: Center(
                   child: Text(
-                    storyBrain.getStory(),
+                    storyBrain.getStory(storyNumber),
                     style: TextStyle(
                       fontSize: 25.0,
                     ),
@@ -56,13 +69,15 @@ class _StoryPageState extends State<StoryPage> {
                 child: TextButton(
                   onPressed: () {
                     //Choice 1 made by user.
-                    storyBrain.nextStory(1);
+                    setState(() {
+                      storyNumber = storyBrain.getChoice1Goal(storyNumber);
+                    });
                   },
                   style: ButtonStyle(
                     backgroundColor: getColor(Colors.red),
                   ),
                   child: Text(
-                    storyBrain.getChoice1(),
+                    storyBrain.getChoice1(storyNumber),
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
@@ -75,18 +90,18 @@ class _StoryPageState extends State<StoryPage> {
               ),
               Expanded(
                 flex: 2,
-                //TODO: Step 26 - Use a Flutter Visibility Widget to wrap this FlatButton.
-                //TODO: Step 28 - Set the "visible" property of the Visibility Widget to equal the output from the buttonShouldBeVisible() method in the storyBrain.
                 child: TextButton(
                   onPressed: () {
                     //Choice 2 made by user.
-                    storyBrain.nextStory(2);
+                    setState(() {
+                      storyNumber = storyBrain.getChoice2Goal(storyNumber);
+                    });
                   },
                   style: ButtonStyle(
                     backgroundColor: getColor(Colors.blue),
                   ),
                   child: Text(
-                    storyBrain.getChoice2(),
+                    storyBrain.getChoice2(storyNumber),
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
